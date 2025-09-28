@@ -1,2 +1,10 @@
 # CSV viewer
-A simple GUI utility for CSV files view.🖥️
+🖥️A simple GUI utility for CSV files view, built in tkinter.
+
+| Demo screen |
+| :----------------|
+| <img width="700" height="550" src=".github/csvViewerDemo.png"> |
+| <a href=".github/csvViewerDemo.png">See demo screen</a> |
+
+## 📃Install important libs:
+    pip install -r requirements.txt
