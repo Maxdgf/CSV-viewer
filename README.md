@@ -3,7 +3,7 @@
 
 | Demo screen |
 | :----------------|
-| <img width="700" height="550" src=".github/csvViewerDemo.png"> |
+| <img width="700" height="550" src=".github/csvViewerAppDemo.png"> |
 | <a href=".github/csvViewerDemo.png">See demo screen</a> |
 
 ## 📃Install important libs:
