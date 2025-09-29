@@ -4,7 +4,7 @@
 | Demo screen |
 | :----------------|
 | <img width="700" height="550" src=".github/csvViewerAppDemo.png"> |
-| <a href=".github/csvViewerDemo.png">See demo screen</a> |
+| <a href=".github/csvViewerAppDemo.png">See demo screen</a> |
 
 ## 📃Install important libs:
     pip install -r requirements.txt
