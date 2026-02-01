@@ -1,6 +1,5 @@
 import os
 import csv
-import asyncio
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from async_tkinter_loop import async_mainloop, async_handler
@@ -29,8 +28,10 @@ class CsvViewerApp(tk.Tk):
         csvDataViewVerticalScrollBar = ttk.Scrollbar(orient="vertical", command=self.csvDataView.yview)
         csvDataViewVerticalScrollBar.grid(row=0, column=1, sticky="ns")
 
-        self.csvItemView = ttk.Label(self, textvariable=self.selectedItem)
-        self.csvItemView.grid(row=1, column=0, sticky="ew")
+        csvItemViewFrame = ttk.Frame(self)
+        self.csvItemView = ttk.Label(csvItemViewFrame, textvariable=self.selectedItem)
+        self.csvItemView.grid(row=0, column=0)
+        csvItemViewFrame.grid(row=1, column=0)
       
         csvDataViewHorizontalScrollBar = ttk.Scrollbar(orient="horizontal", command=self.csvDataView.xview)
         csvDataViewHorizontalScrollBar.grid(row=2, column=0, sticky="ew")
@@ -40,38 +41,36 @@ class CsvViewerApp(tk.Tk):
         self.csvDataView.tag_configure("style", foreground="white", background="black")
         self.csvDataView.bind("<<TreeviewSelect>>", self.on_element_click)
 
-    def exit_app(self): self.destroy()
+    def exit_app(self): 
+        '''Exits app.''' 
+        self.destroy()
 
     def on_element_click(self, event):
+        '''Processes csv table element click event.'''
         selected_items = self.csvDataView.selection()
 
         for item in selected_items:
             data = self.csvDataView.item(item)["values"]
             strResultData = ' | '.join(map(str, data))
-
             self.selectedItem.set(f"-> {strResultData}")
 
     @async_handler
     async def read_csv(self):
+        '''Reads and processes selected csv file.'''
         path = filedialog.askopenfilename(title="Select CSV file", filetypes=[("CSV file", "*.csv"), ("All files", "*.")])
         data = []
 
         if os.path.exists(path):
             with open(path, newline="") as csvFile:
                 csvReader = csv.reader(csvFile)
-
                 for row in csvReader:
                     data.append(row)
-
-            await asyncio.sleep(0.1)
             
             if len(data) > 0:
                 elements = self.csvDataView.get_children()
-
-                if (len(elements) > 0):
+                if (len(elements) > 0): # remove existing elements before new ones
                     for element in elements:
                         self.csvDataView.delete(element)
-
                 columnsTuple = (data[0])
 
                 self.csvDataView.config(columns=columnsTuple, show="headings")
@@ -79,14 +78,10 @@ class CsvViewerApp(tk.Tk):
                 for column in data[0]:
                     self.csvDataView.heading(column=column, text=column)
 
-                await asyncio.sleep(0.1)
-
                 for dataGroup in data[1:len(data)]:
                     self.csvDataView.insert("", "end", values=dataGroup, tags=("style"))
-            else:
-                messagebox.showerror("Error", "CSV file is empty!")
-        else:
-            messagebox.showerror("Error", "Incorrect path!")
+            else: messagebox.showerror("Error", "CSV file is empty!")
+        else: messagebox.showerror("Error", "Incorrect path!")
 
 if __name__ == "__main__":
     csvViewerApp = CsvViewerApp()
