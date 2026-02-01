@@ -1,2 +1,1 @@
-tk==0.1.0
 async-tkinter-loop==0.9.3
